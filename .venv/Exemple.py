@@ -1,2 +1,2 @@
-print("première version de mon test")
-print("deuxiéme version de mon test")
+print("Première version de mon test")
+print("Deuxiéme version de mon test")

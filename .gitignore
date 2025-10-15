@@ -1,2 +1,4 @@
 .venv/Crimes_-_2001_to_Present_20251013.csv
 .venv/Crimes_-_2001_to_Present_20251013.csv
+.venv/Lib/site-packages/pyspark/jars/rocksdbjni-9.8.4.jar
+.venv/yellow_tripdata_2025-01.parquet

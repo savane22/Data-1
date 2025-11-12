@@ -1,3 +1,9 @@
+-- Delta Live Tables Project – Yellow Taxi Data Pipeline
+-- Ce projet démontre la mise en place d’un pipeline de données moderne avec Delta Live Tables (DLT) dans Databricks.
+-- À travers un cas concret basé sur les données Yellow Taxi de New York, il illustre comment appliquer les bonnes pratiques Data Engineering en mode Bronze → Silver → Gold.
+
+-- Objectif : Passer de données brutes (raw) à des données agrégées et prêtes pour le reporting, via un pipeline scalable, fiable et automatisé.
+
 -- Databricks notebook source
 -- Table des trajets bruts alimentée par Auto Loader
 CREATE OR REFRESH STREAMING LIVE TABLE raw_trips

@@ -1,4 +1,4 @@
--- 🔬 Tests de qualité des données – dbt + DuckDB
+-- 🔬 Tests de qualité des données
 
 -- Ce projet met en place plusieurs tests personnalisés (custom tests) exécutés via dbt sur DuckDB afin de garantir l’intégrité des données, leur cohérence statistique et le respect des règles métier sur le modèle transform (dataset de trajets de taxis de NYC).
 
@@ -63,4 +63,5 @@ WHERE trip_distance <= 0;     -- Détecte les trajets avec une distance nulle ou
 SELECT *
 FROM {{ ref('transform') }}
 WHERE trip_duration_minutes <= 0;   -- Détecte les durées de trajet nulles ou négatives (anomalies temporelles)
+
 

@@ -1,0 +1,108 @@
+
+version: 2
+
+models:
+  - name: transform
+    description: "Dataset des trajets de taxi jaune de New York au cours de l'année 2024."
+    columns:
+
+      - name: tpep_pickup_datetime
+        description: "The date and time when the meter was engaged."
+        tests:
+          - not_null
+
+      - name: tpep_dropoff_datetime
+        description: "The date and time when the meter was disengaged."
+        tests:
+          - not_null
+
+      - name: trip_duration_minutes
+        description: "Duration of the trip in minutes."
+        tests:
+          - not_null
+
+      - name: trip_distance
+        description: "The trip distance in miles."
+        tests:
+          - not_null
+
+      - name: passenger_count
+        description: "The number of passengers in the vehicle."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 6
+              - dbt_expectations.expect_column_values_to_be__of_type:
+                  column_type: BIGINT
+
+      - name: payment_methode
+        description: "Translated payment method."
+        tests:
+          - not_null
+          accepted_values:
+            values: ['Credit Card', 'Cash', 'No Charge']
+
+      - name: store_and_fwd_flag
+        description: "Indicates whether the trip record was stored in vehicle memory before sending to the vendor because the vehicle did not have a connection to the server."
+        tests:
+          - not_null
+          accepted_values:
+            values: ['N']
+
+      - name: PULocationID
+        description: "The taxi zone where the trip started."
+        tests:
+          - not_null
+
+      - name: DOLocationID
+        description: "The taxi zone where the trip ended."
+        tests:
+          - not_null
+
+      - name: fare_amount
+        description: "The time-and-distance fare calculated by the meter."
+        tests:
+          - not_null
+
+      - name: total_amount
+        description: "The total amount charged to passengers."
+        tests:
+          - not_null
+
+      - name: tip_amount
+        description: "Tip amount."
+        tests:
+          - not_null
+
+      - name: tolls_amount
+        description: "Total amount of all tolls paid during the trip."
+        tests:
+          - not_null
+
+      - name: improvement_surcharge
+        description: "Improvement surcharge."
+        tests:
+          - not_null
+
+      - name: congestion_surcharge
+        description: "Congestion surcharge."
+        tests:
+          - not_null
+
+      - name: extra 
+        description: "The extra paid in trip."
+        tests:
+          - not_null
+
+      - name: mta_tax
+        description: "The MTA taxi paid in trip."
+        tests:
+          - not_null
+
+      - name: Airport_fee
+        description: "The airport fee paid in trip."
+        tests:
+          - not_null
+          
+

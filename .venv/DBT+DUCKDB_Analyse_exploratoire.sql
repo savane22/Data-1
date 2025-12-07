@@ -1,3 +1,37 @@
+🎯 OBJECTIF DU PROJET: Pipeline de traitement des données Taxi (dbt + DuckDB)
+
+# Ce projet a pour objectif de mettre en place un pipeline complet de traitement et de contrôle de la qualité des données des trajets de taxis de New York
+# pour l’année 2024, en utilisant dbt et DuckDB, à partir de fichiers Parquet publics hébergés en ligne.
+
+# Il repose sur plusieurs fichiers de configuration .yml qui structurent l’ensemble du flux de données :
+
+# sources.yml : définit une source de données externe appelée tlc_taxi_trips, pointant automatiquement vers les 12 fichiers Parquet mensuels
+#  de 2024 (yellow_tripdata_2024-01 à yellow_tripdata_2024-12) grâce à une génération dynamique d’URLs ;
+
+# schema.yml : documente les modèles et met en place des tests de qualité portant sur des variables clés (nombre de passagers, distance parcourue,
+#  durée du trajet, cohérence temporelle, etc.) ;
+
+# dbt_project.yml : définit la structure globale du projet dbt, l’organisation des modèles et les conventions de nommage ;
+
+# profiles.yml : configure l’environnement d’exécution avec DuckDB comme moteur de stockage et précise le chemin de la base locale transformed_data.db.
+
+# À partir de ces configurations, le projet exécute plusieurs étapes successives :
+
+# Ingestion des données brutes depuis les fichiers Parquet distants ;
+
+# Nettoyage et filtrage des données incohérentes ou aberrantes (distances nulles, durées négatives, montants invalides, etc.) ;
+
+# Transformation des variables (calculs de durées, recodage des moyens de paiement, création de variables dérivées) ;
+
+# Validation de la complétude des données (présence des 12 mois) et des règles métier ;
+
+# Export final des données propres au format Parquet pour une utilisation analytique ou décisionnelle.
+
+# Ce projet illustre la mise en œuvre concrète d’un pipeline ELT automatisé, reproductible et documenté,
+#  intégrant à la fois le traitement, la validation et la structuration des données, dans une logique proche des environnements industriels de la data.
+
+
+
 -- 🎯 Objectif:
 -- Mettre en place une analyse exploratoire et un contrôle qualité automatisé du dataset des courses de taxis (NYC)
 -- afin d’identifier les incohérences (dates, distances, montants) et de sécuriser le pipeline de traitement avant modélisation ou visualisation.
@@ -100,3 +134,4 @@ WHERE total_amount <= 0;
 SELECT * EXCLUDE(VendorID, RatecodeID)
 FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-12.parquet')
 LIMIT 10;
+

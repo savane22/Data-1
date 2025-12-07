@@ -1,0 +1,8 @@
+Projet_dbt:                    # Nom du projet dbt
+  target: dev                  # Environnement cible par défaut
+
+  outputs:
+    dev:                        # Configuration de l’environnement "dev"
+      type: duckdb              # Utilisation de DuckDB comme moteur de base de données
+      path: './output/transformed_data.db'   # Chemin vers le fichier de base de données
+      schema: 'main'            # Schéma utilisé dans la base DuckDB

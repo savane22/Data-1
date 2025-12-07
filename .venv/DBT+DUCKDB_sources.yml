@@ -1,15 +1,22 @@
-version: 2
+version: 2    # Version du format des sources dbt
 
 sources:
-  - name: tlc taxi_trips
+  - name: tlc taxi_trips    # Nom logique de la source utilisée dans dbt
+
     meta:
-      external_location: >
-      (FROM read_parquet(
-        list_transform(
-          range(1, 13),
-          m -> 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-' || lpad(m::text, 2, '0') || '.parquet'
+      external_location: >   # Définition d’une source de données externe
+      (FROM read_parquet(      # Lecture directe de plusieurs fichiers au format Parquet
+
+        list_transform(         # Création dynamique d’une liste d’URL
+          range(1, 13),         # Génère une séquence de 1 à 12 (les 12 mois de l’année 2024)
+          m ->                   # Pour chaque valeur m (mois) :
+            'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-'
+            || lpad(m::text, 2, '0')   # Formatage du mois sur deux chiffres (01 à 12)
+            || '.parquet'               # Extension du fichier
         )
+
       ))
-      formatter: oldstyle
+      formatter: oldstyle       # Format attendu par DuckDB/dbt-duckdb
+
     tables:
-      - name: raw_yellow_tripdata
+      - name: raw_yellow_tripdata   # Nom de la table utilisé dans les modèles dbt

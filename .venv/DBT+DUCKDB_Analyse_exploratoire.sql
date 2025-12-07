@@ -1,41 +1,54 @@
 🎯 OBJECTIF DU PROJET: Pipeline de traitement des données Taxi (dbt + DuckDB)
 
-# Ce projet a pour objectif de mettre en place un pipeline complet de traitement et de contrôle de la qualité des données des trajets de taxis de New York
-# pour l’année 2024, en utilisant dbt et DuckDB, à partir de fichiers Parquet publics hébergés en ligne.
+# Ce projet a pour objectif de mettre en place un pipeline complet de traitement, de contrôle qualité et d’analyse exploratoire des données de trajets de taxis
+#  de New York pour l’année 2024, en utilisant dbt et DuckDB, à partir de fichiers Parquet publics hébergés en ligne.
 
-# Il repose sur plusieurs fichiers de configuration .yml qui structurent l’ensemble du flux de données :
+# Il repose sur plusieurs fichiers de configuration .yml et des scripts .sql qui structurent et automatisent l’ensemble du flux de données :
 
-# sources.yml : définit une source de données externe appelée tlc_taxi_trips, pointant automatiquement vers les 12 fichiers Parquet mensuels
-#  de 2024 (yellow_tripdata_2024-01 à yellow_tripdata_2024-12) grâce à une génération dynamique d’URLs ;
+-- 📁 Fichiers de configuration .yml
 
-# schema.yml : documente les modèles et met en place des tests de qualité portant sur des variables clés (nombre de passagers, distance parcourue,
-#  durée du trajet, cohérence temporelle, etc.) ;
+# sources.yml : définit une source de données externe appelée tlc_taxi_trips, pointant automatiquement vers les 12 fichiers Parquet mensuels de 2024
+#  (yellow_tripdata_2024-01 à yellow_tripdata_2024-12) grâce à une génération dynamique d’URLs ;
 
-# dbt_project.yml : définit la structure globale du projet dbt, l’organisation des modèles et les conventions de nommage ;
+# schema.yml : documente les modèles et met en place des tests de qualité des données (distance positive, nombre de passagers valide, durée non négative,
+#  cohérence temporelle, etc.) ;
+
+# dbt_project.yml : définit la structure globale du projet dbt, l’organisation des modèles et les conventions utilisées ;
 
 # profiles.yml : configure l’environnement d’exécution avec DuckDB comme moteur de stockage et précise le chemin de la base locale transformed_data.db.
 
-# À partir de ces configurations, le projet exécute plusieurs étapes successives :
+-- 📄 Fichiers SQL principaux
 
-# Ingestion des données brutes depuis les fichiers Parquet distants ;
+# transform.sql / transformed.sql : contient la logique principale de nettoyage et de transformation des données, incluant le filtrage des valeurs incohérentes,
+#  le calcul de la durée des trajets, le recodage des moyens de paiement et la sélection des courses de l’année 2024 ;
 
-# Nettoyage et filtrage des données incohérentes ou aberrantes (distances nulles, durées négatives, montants invalides, etc.) ;
+# analyse_exploratoire.sql : permet de réaliser une analyse statistique descriptive (volumes, distances moyennes, durées, répartition des paiements, etc.)
+#  afin de mieux comprendre la structure des données ;
 
-# Transformation des variables (calculs de durées, recodage des moyens de paiement, création de variables dérivées) ;
+# test_customer.sql : regroupe des requêtes de validation et de contrôle qualité personnalisées, destinées à détecter les anomalies restantes après transformation.
 
-# Validation de la complétude des données (présence des 12 mois) et des règles métier ;
+-- 🔁 Chaîne de traitement mise en œuvre
 
-# Export final des données propres au format Parquet pour une utilisation analytique ou décisionnelle.
+# À partir de ces éléments, le projet exécute le pipeline suivant :
 
-# Ce projet illustre la mise en œuvre concrète d’un pipeline ELT automatisé, reproductible et documenté,
-#  intégrant à la fois le traitement, la validation et la structuration des données, dans une logique proche des environnements industriels de la data.
+# Ingestion des données brutes depuis les fichiers Parquet distants (Définition dans sources.yml)
 
+# Nettoyage et filtrage des valeurs aberrantes (script transform.sql)
 
+# Transformation et enrichissement des variables (durée, date, moyen de paiement, etc.)
 
--- 🎯 Objectif:
+# Tests de qualité et de cohérence (schema.yml + test_customer.sql)
+
+# Analyse exploratoire des données propres (analyse_exploratoire.sql)
+
+# Export final au format Parquet pour une utilisation analytique ou décisionnelle
+
+# Ce projet illustre la mise en place d’un pipeline ELT reproductible, automatisé et structuré, proche des standards industriels en data engineering et analytics.
+
+  
+-- BUT:
 -- Mettre en place une analyse exploratoire et un contrôle qualité automatisé du dataset des courses de taxis (NYC)
 -- afin d’identifier les incohérences (dates, distances, montants) et de sécuriser le pipeline de traitement avant modélisation ou visualisation.
-
 
 -- 1) Afficher un échantillon de 10 lignes pour explorer la structure du dataset
 SELECT * 
@@ -134,4 +147,5 @@ WHERE total_amount <= 0;
 SELECT * EXCLUDE(VendorID, RatecodeID)
 FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-12.parquet')
 LIMIT 10;
+
 

@@ -7,25 +7,25 @@
 
 -- 📁 Fichiers de configuration .yml
 
-# sources.yml : définit une source de données externe appelée tlc_taxi_trips, pointant automatiquement vers les 12 fichiers Parquet mensuels de 2024
+# DBT+DUCKDB_sources.yml : définit une source de données externe appelée tlc_taxi_trips, pointant automatiquement vers les 12 fichiers Parquet mensuels de 2024
 #  (yellow_tripdata_2024-01 à yellow_tripdata_2024-12) grâce à une génération dynamique d’URLs ;
 
-# schema.yml : documente les modèles et met en place des tests de qualité des données (distance positive, nombre de passagers valide, durée non négative,
+# DBT+DUCKDB_schema.yml : documente les modèles et met en place des tests de qualité des données (distance positive, nombre de passagers valide, durée non négative,
 #  cohérence temporelle, etc.) ;
 
-# dbt_project.yml : définit la structure globale du projet dbt, l’organisation des modèles et les conventions utilisées ;
+# DBT+DUCKDB_Project.yml : définit la structure globale du projet dbt, l’organisation des modèles et les conventions utilisées ;
 
-# profiles.yml : configure l’environnement d’exécution avec DuckDB comme moteur de stockage et précise le chemin de la base locale transformed_data.db.
+# DBT+DUCKDB_Profiles.yml : configure l’environnement d’exécution avec DuckDB comme moteur de stockage et précise le chemin de la base locale transformed_data.db.
 
 -- 📄 Fichiers SQL principaux
 
-# transform.sql / transformed.sql : contient la logique principale de nettoyage et de transformation des données, incluant le filtrage des valeurs incohérentes,
+# DBT+DUCKDB_transform.sql / transformed.sql : contient la logique principale de nettoyage et de transformation des données, incluant le filtrage des valeurs incohérentes,
 #  le calcul de la durée des trajets, le recodage des moyens de paiement et la sélection des courses de l’année 2024 ;
 
-# analyse_exploratoire.sql : permet de réaliser une analyse statistique descriptive (volumes, distances moyennes, durées, répartition des paiements, etc.)
+# DBT+DUCKDB_Analyse_exploratoire.sql : permet de réaliser une analyse statistique descriptive (volumes, distances moyennes, durées, répartition des paiements, etc.)
 #  afin de mieux comprendre la structure des données ;
 
-# test_customer.sql : regroupe des requêtes de validation et de contrôle qualité personnalisées, destinées à détecter les anomalies restantes après transformation.
+# DBT+DUCKDB_Test.sql : regroupe des requêtes de validation et de contrôle qualité personnalisées, destinées à détecter les anomalies restantes après transformation.
 
 -- 🔁 Chaîne de traitement mise en œuvre
 
@@ -147,6 +147,7 @@ WHERE total_amount <= 0;
 SELECT * EXCLUDE(VendorID, RatecodeID)
 FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-12.parquet')
 LIMIT 10;
+
 
 
 

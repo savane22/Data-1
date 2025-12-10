@@ -1,4 +1,4 @@
-🎯 OBJECTIF DU PROJET: Pipeline de traitement des données Taxi (dbt + DuckDB)
+ OBJECTIF DU PROJET: Pipeline de traitement des données Taxi (dbt + DuckDB)
 
 # Ce projet a pour objectif de mettre en place un pipeline complet de traitement, de contrôle qualité et d’analyse exploratoire des données de trajets de taxis
 #  de New York pour l’année 2024, en utilisant dbt et DuckDB, à partir de fichiers Parquet publics hébergés en ligne.
@@ -147,6 +147,7 @@ WHERE total_amount <= 0;
 SELECT * EXCLUDE(VendorID, RatecodeID)
 FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-12.parquet')
 LIMIT 10;
+
 
 
 
